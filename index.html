@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para vos 🌻</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: #080808;
+    color: white;
+    font-family: Georgia, serif;
+    overflow-x: hidden;
+}
+
+/* PANTALLA INICIAL */
+#inicio {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+    background:
+        radial-gradient(circle at center, #33280b 0%, #111 35%, #050505 75%);
+    transition: opacity 1.2s ease;
+}
+
+#inicio h1 {
+    font-size: clamp(27px, 8vw, 42px);
+    font-weight: normal;
+    margin-bottom: 15px;
+}
+
+#inicio p {
+    color: #cfcfcf;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.boton {
+    border: 1px solid #e5c45a;
+    background: transparent;
+    color: #f4d66c;
+    padding: 13px 32px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.boton:hover {
+    background: #e5c45a;
+    color: #111;
+}
+
+/* PÁGINA */
+#pagina {
+    display: none;
+    min-height: 100vh;
+    padding: 55px 20px;
+    text-align: center;
+}
+
+/* ESTRELLAS */
+.estrella {
+    position: fixed;
+    color: #f3d56b;
+    opacity: .6;
+    animation: aparecer 2s infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes aparecer {
+    from { opacity: .2; }
+    to { opacity: .8; }
+}
+
+/* FLOR */
+.flor {
+    font-size: 90px;
+    margin-top: 20px;
+    animation: flotar 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px rgba(255,210,50,.4));
+}
+
+@keyframes flotar {
+    0%,100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+.titulo {
+    margin-top: 20px;
+    color: #f2d36b;
+    font-size: 26px;
+    font-weight: normal;
+}
+
+.subtitulo {
+    margin-top: 12px;
+    color: #bbb;
+    line-height: 1.7;
+}
+
+/* SOBRE */
+.sobre-area {
+    margin: 70px auto 15px;
+    width: 290px;
+    height: 195px;
+    position: relative;
+    cursor: pointer;
+}
+
+.sobre {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #d4b563;
+    border-radius: 6px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.6);
+}
+
+.sobre::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-left: 145px solid transparent;
+    border-right: 145px solid transparent;
+    border-bottom: 105px solid #aa8537;
+}
+
+.tapa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 145px solid transparent;
+    border-right: 145px solid transparent;
+    border-top: 110px solid #ead38b;
+    transform-origin: top;
+    transition: 1s ease;
+    z-index: 5;
+}
+
+.sobre-area.abierto .tapa {
+    transform: rotateX(180deg);
+}
+
+.sello {
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%,-50%);
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #8e1825;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    box-shadow: 0 4px 15px #000;
+    transition: .6s;
+}
+
+.sobre-area.abierto .sello {
+    opacity: 0;
+    transform: translate(-50%,-50%) scale(.5);
+}
+
+/* CARTA */
+.carta {
+    max-width: 650px;
+    margin: 55px auto 0;
+    padding: 35px 25px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(231,199,91,.35);
+    border-radius: 20px;
+    box-shadow: 0 0 45px rgba(231,199,91,.07);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 1.5s ease;
+}
+
+.carta.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.carta h2 {
+    color: #f1d36d;
+    font-size: 29px;
+    font-weight: normal;
+    margin-bottom: 25px;
+}
+
+.carta p {
+    color: #eee;
+    font-size: 17px;
+    line-height: 1.9;
+}
+
+.firma {
+    margin-top: 30px;
+    color: #f1d36d;
+    font-size: 21px;
+    font-style: italic;
+}
+
+/* FOTO */
+.foto {
+    width: min(90%, 350px);
+    margin: 35px auto 0;
+    border-radius: 18px;
+    display: none;
+    box-shadow: 0 10px 35px rgba(0,0,0,.7);
+}
+
+/* FINAL */
+.final {
+    margin-top: 70px;
+    padding-bottom: 30px;
+    color: #f1d36d;
+    font-size: 22px;
+}
+
+/* CORAZONES */
+.corazon {
+    position: fixed;
+    bottom: -30px;
+    color: #f1d36d;
+    pointer-events: none;
+    animation: subir 7s linear forwards;
+    z-index: 50;
+}
+
+@keyframes subir {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: .8;
+    }
+
+    100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INICIO -->
+<section id="inicio">
+
+    <h1>Hay algo para vos... 💛</h1>
+
+    <p>
+        Una pequeña sorpresa hecha especialmente para vos.
+    </p>
+
+    <button class="boton" onclick="entrar()">
+        Abrir mi regalo
+    </button>
+
+</section>
+
+
+<!-- PÁGINA -->
+<main id="pagina">
+
+    <div class="flor">🌻</div>
+
+    <h1 class="titulo">
+        Para vos
+    </h1>
+
+    <p class="subtitulo">
+        Porque algunas personas llegan<br>
+        y hacen que todo empiece a florecer.
+    </p>
+
+
+    <!-- SOBRE -->
+    <div class="sobre-area" onclick="abrirSobre(this)">
+
+        <div class="sobre"></div>
+
+        <div class="tapa"></div>
+
+        <div class="sello">
+            ♡
+        </div>
+
+    </div>
+
+    <p style="color:#999;">
+        Tocá el sobre para abrirlo
+    </p>
+
+
+    <!-- CARTA -->
+    <article class="carta" id="carta">
+
+        <h2>Siempre vos. ♡</h2>
+
+        <p>
+            Amo la forma en que llegaste a mi vida y,
+            sin pedir permiso, empezaste a ocupar un
+            espacio que ahora siento completamente tuyo.
+        </p>
+
+        <br>
+
+        <p>
+            Hay algo especial en vos, en tu manera de
+            transformar los días comunes en recuerdos
+            que quiero guardar para siempre.
+        </p>
+
+        <br>
+
+        <p>
+            Quizás no siempre encuentre las palabras
+            exactas para explicarte todo lo que significás
+            para mí, pero hay algo que sí sé:
+            tenerte en mi vida es una de esas cosas
+            que agradezco más de lo que puedo decir.
+        </p>
+
+        <br>
+
+        <p>
+            Gracias por existir, por coincidir conmigo
+            y por hacer que mi mundo tenga un poquito
+            más de luz.
+        </p>
+
+        <div class="firma">
+            Siempre vos. 🌻
+        </div>
+
+    </article>
+
+
+    <div class="final">
+        Hecho con cariño para vos ♡
+    </div>
+
+</main>
+
+
+<script>
+
+function entrar() {
+
+    const inicio = document.getElementById("inicio");
+    const pagina = document.getElementById("pagina");
+
+    inicio.style.opacity = "0";
+
+    setTimeout(() => {
+
+        inicio.style.display = "none";
+        pagina.style.display = "block";
+
+        crearEstrellas();
+        crearCorazones();
+
+    }, 1200);
+}
+
+
+function abrirSobre(elemento) {
+
+    elemento.classList.add("abierto");
+
+    setTimeout(() => {
+
+        const carta = document.getElementById("carta");
+
+        carta.classList.add("mostrar");
+
+        carta.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }, 900);
+}
+
+
+function crearCorazones() {
+
+    setInterval(() => {
+
+        const corazon = document.createElement("div");
+
+        corazon.className = "corazon";
+
+        corazon.innerHTML =
+            Math.random() > .5 ? "♡" : "✦";
+
+        corazon.style.left =
+            Math.random() * 100 + "vw";
+
+        corazon.style.fontSize =
+            (12 + Math.random() * 18) + "px";
+
+        corazon.style.animationDuration =
+            (5 + Math.random() * 5) + "s";
+
+        document.body.appendChild(corazon);
+
+        setTimeout(() => {
+            corazon.remove();
+        }, 10000);
+
+    }, 700);
+}
+
+
+function crearEstrellas() {
+
+    for (let i = 0; i < 25; i++) {
+
+        const estrella = document.createElement("div");
+
+        estrella.className = "estrella";
+        estrella.innerHTML = "✦";
+
+        estrella.style.left =
+            Math.random() * 100 + "vw";
+
+        estrella.style.top =
+            Math.random() * 100 + "vh";
+
+        estrella.style.fontSize =
+            (8 + Math.random() * 10) + "px";
+
+        estrella.style.animationDelay =
+            Math.random() * 3 + "s";
+
+        document.body.appendChild(estrella);
+    }
+}
+
+</script>
+
+</body>
+  </html>
